@@ -10,6 +10,7 @@ import BoardCard from '../../components/BoardCard/BoardCard'
 import { useModal } from '../../contexts/ModalContext'
 import useClickOutside from '../../hooks/useClickOutside'
 import { boardKeys } from '../../api/boards'
+import { BASE_URL } from '../../api/config'
 
 function Profile() {
     const auth = useSelector(state => state.auth)
@@ -36,7 +37,7 @@ function Profile() {
     })
 
     async function fetchUserProfile() {
-        const res = await fetch(`http://localhost:4000/api/users/${username}`);
+        const res = await fetch(`${BASE_URL}/users/${username}`);
         const data = await res.json();
         if (!res.ok) {
             throw new Error(data.error);
@@ -60,8 +61,8 @@ function Profile() {
 
     async function fetchUserPins(pageParam) {
         const url = pageParam
-            ? `http://localhost:4000/api/users/${username}/pins/all?cursor=${pageParam}&limit=5` // 첫 페이지 외 다음 페이지 요청
-            : `http://localhost:4000/api/users/${username}/pins/all?limit=5`; // 첫 페이지 요청
+            ? `${BASE_URL}/users/${username}/pins/all?cursor=${pageParam}&limit=5` // 첫 페이지 외 다음 페이지 요청
+            : `${BASE_URL}/users/${username}/pins/all?limit=5`; // 첫 페이지 요청
         const res = await fetch(url);
         const data = await res.json();
         if (!res.ok) {
@@ -86,8 +87,8 @@ function Profile() {
 
     async function fetchUserPinsByMe(pageParam) {
         const url = pageParam
-            ? `http://localhost:4000/api/users/${username}/pins?cursor=${pageParam}&limit=5` // 첫 페이지 외 다음 페이지 요청
-            : `http://localhost:4000/api/users/${username}/pins?limit=5`; // 첫 페이지 요청
+            ? `${BASE_URL}/users/${username}/pins?cursor=${pageParam}&limit=5` // 첫 페이지 외 다음 페이지 요청
+            : `${BASE_URL}/users/${username}/pins?limit=5`; // 첫 페이지 요청
         const res = await fetch(url);
         const data = await res.json();
         if (!res.ok) {
@@ -114,8 +115,8 @@ function Profile() {
 
     async function fetchUserBoards(pageParam) {
         const url = pageParam
-            ? `http://localhost:4000/api/users/${username}/boards?cursor=${pageParam}&limit=5` // 첫 페이지 외 다음 페이지 요청
-            : `http://localhost:4000/api/users/${username}/boards?limit=5`; // 첫 페이지 요청
+            ? `${BASE_URL}/users/${username}/boards?cursor=${pageParam}&limit=5` // 첫 페이지 외 다음 페이지 요청
+            : `${BASE_URL}/users/${username}/boards?limit=5`; // 첫 페이지 요청
         const res = await fetch(url);
         const data = await res.json();
         if (!res.ok) {

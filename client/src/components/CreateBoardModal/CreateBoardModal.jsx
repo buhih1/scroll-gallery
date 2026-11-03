@@ -7,6 +7,7 @@ import useClickOutside from '../../hooks/useClickOutside';
 import { useRef } from 'react';
 import { useAuthFetch } from '../../hooks/useAuthFetch';
 import { boardKeys } from '../../api/boards';
+import { BASE_URL } from '../../api/config';
 
 function CreateBoardModal({ onClose, onBoardCreated = () => { } }) {
     const auth = useSelector(state => state.auth)
@@ -23,7 +24,7 @@ function CreateBoardModal({ onClose, onBoardCreated = () => { } }) {
 
     const { mutate: createBoard, isPending: isCreatingBoard, isError, error } = useMutation({
         mutationFn: async (boardName) => {
-            const res = await authFetch('http://localhost:4000/api/boards', {
+            const res = await authFetch(`${BASE_URL}/boards`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

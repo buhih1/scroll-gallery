@@ -11,6 +11,7 @@ import { useAuthFetch } from '../../hooks/useAuthFetch';
 import { pinKeys } from '../../hooks/pins/queryKeys';
 import { boardKeys } from '../../api/boards';
 import { searchKeys } from '../../api/search';
+import { BASE_URL } from '../../api/config';
 
 export default function PinEditModal({ onClose, pin, isTop, onDeleted }) {
     const pinSource = pin.source ?? 'own';
@@ -42,7 +43,7 @@ export default function PinEditModal({ onClose, pin, isTop, onDeleted }) {
         error: updatePinError,
     } = useMutation({
         mutationFn: async (updatedPinData) => {
-            const res = await authFetch(`http://localhost:4000/api/pins/${pin._id}`, {
+            const res = await authFetch(`${BASE_URL}/pins/${pin._id}`, {
                 method: 'PATCH',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(updatedPinData),

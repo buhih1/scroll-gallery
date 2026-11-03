@@ -8,6 +8,7 @@ import { useAuthFetch } from '../../../../hooks/useAuthFetch';
 import { pinKeys } from '../../../../hooks/pins/queryKeys';
 import { boardKeys } from '../../../../api/boards';
 import { searchKeys } from '../../../../api/search';
+import { BASE_URL } from '../../../../api/config';
 
 export default function DeletePinModal({ onClose, pin, mode, onDeleted }) {
     const { closeAllModals } = useModal()
@@ -22,7 +23,7 @@ export default function DeletePinModal({ onClose, pin, mode, onDeleted }) {
         error: deletePinError,
     } = useMutation({
         mutationFn: async () => {
-            const res = await authFetch(`http://localhost:4000/api/pins/${pin._id}`, {
+            const res = await authFetch(`${BASE_URL}/pins/${pin._id}`, {
                 method: 'DELETE',
             })
 
@@ -70,7 +71,7 @@ export default function DeletePinModal({ onClose, pin, mode, onDeleted }) {
         error: removePinFromBoardError,
     } = useMutation({
         mutationFn: async () => {
-            const res = await authFetch(`http://localhost:4000/api/boards/${pin.board._id}/pins/${pin._id}`, {
+            const res = await authFetch(`${BASE_URL}/boards/${pin.board._id}/pins/${pin._id}`, {
                 method: 'DELETE',
             })
 

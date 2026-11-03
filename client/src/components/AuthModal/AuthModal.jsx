@@ -7,6 +7,7 @@ import Button from '../Button/Button'
 import { useDispatch } from 'react-redux'
 import { login } from '../../store/authSlice'
 import useClickOutside from '../../hooks/useClickOutside'
+import { BASE_URL } from '../../api/config'
 
 function validateField(field, value) {
     switch (field) {
@@ -77,7 +78,7 @@ function AuthModal(props) {
 
         setIsSubmitting(true);
         try {
-            const res = await fetch('http://localhost:4000/api/auth/register', {
+            const res = await fetch(`${BASE_URL}/auth/register`, {
                 method: 'POST',
                 credentials: 'include',
                 headers: { 'Content-Type': 'application/json' },
@@ -113,7 +114,7 @@ function AuthModal(props) {
 
         setIsSubmitting(true);
         try {
-            const res = await fetch('http://localhost:4000/api/auth/login', {
+            const res = await fetch(`${BASE_URL}/auth/login`, {
                 method: 'POST',
                 credentials: 'include',
                 headers: { 'Content-Type': 'application/json' },

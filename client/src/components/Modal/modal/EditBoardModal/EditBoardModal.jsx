@@ -7,6 +7,7 @@ import { useAuthFetch } from '../../../../hooks/useAuthFetch';
 import { useRef, useState } from 'react';
 import Button from '../../../Button/Button';
 import { boardKeys } from '../../../../api/boards';
+import { BASE_URL } from '../../../../api/config';
 // _id: 1,
 // name: 1,
 // description: 1,
@@ -37,7 +38,7 @@ export default function EditBoardModal({ onClose, isTop, board, onDeleted }) {
         error: updateBoardError,
     } = useMutation({
         mutationFn: async (updatedBoardData) => {
-            const res = await authFetch(`http://localhost:4000/api/boards/${board._id}`, {
+            const res = await authFetch(`${BASE_URL}/boards/${board._id}`, {
                 method: 'PATCH',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(updatedBoardData),

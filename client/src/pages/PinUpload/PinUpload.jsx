@@ -8,6 +8,7 @@ import BoardSelector from '../../components/BoardSelector/BoardSelector';
 import { useAuthFetch } from '../../hooks/useAuthFetch';
 import { boardKeys } from '../../api/boards';
 import { searchKeys } from '../../api/search';
+import { BASE_URL } from '../../api/config';
 
 function PinUpload() {
     const auth = useSelector(state => state.auth)
@@ -70,7 +71,7 @@ function PinUpload() {
 
     const { mutate: uploadPin, isPending } = useMutation({
         mutationFn: async (submitData) => {
-            const res = await authFetch('http://localhost:4000/api/pins', {
+            const res = await authFetch(`${BASE_URL}/pins`, {
                 method: 'POST',
                 body: submitData,
             })

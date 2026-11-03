@@ -3,6 +3,7 @@ import { useEffect, useMemo } from 'react'
 import { useInfiniteQuery } from '@tanstack/react-query'
 import MasonryGrid from '../../components/MasonryGrid/MasonryGrid'
 import styles from './Home.module.css'
+import { BASE_URL } from '../../api/config'
 
 function Home() {
     const sentinelRef = useRef(null); // infinite scroll 구현용 감지할 element
@@ -19,8 +20,8 @@ function Home() {
         queryKey: ['pins'],
         queryFn: async ({ pageParam }) => {
             const url = pageParam
-                ? `http://localhost:4000/api/pins?cursor=${pageParam}&limit=5` // 첫 페이지 외 다음 페이지 요청
-                : `http://localhost:4000/api/pins?limit=5`; // 첫 페이지 요청
+                ? `${BASE_URL}/pins?cursor=${pageParam}&limit=5` // 첫 페이지 외 다음 페이지 요청
+                : `${BASE_URL}/pins?limit=5`; // 첫 페이지 요청
             const res = await fetch(url);
             const data = await res.json();
             if (!res.ok) throw new Error(data.error);

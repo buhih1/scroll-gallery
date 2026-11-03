@@ -1,5 +1,7 @@
+import { BASE_URL } from "./config";
+
 export const postComment = async (authFetch, pinId, { text, replyToCommentId }) => {
-    const res = await authFetch(`http://localhost:4000/api/pins/${pinId}/comments`, {
+    const res = await authFetch(`${BASE_URL}/pins/${pinId}/comments`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ text, replyToCommentId }),
@@ -10,7 +12,7 @@ export const postComment = async (authFetch, pinId, { text, replyToCommentId }) 
 }
 
 export const deleteComment = async (authFetch, pinId, commentId) => {
-    const res = await authFetch(`http://localhost:4000/api/pins/${pinId}/comments/${commentId}`, {
+    const res = await authFetch(`${BASE_URL}/pins/${pinId}/comments/${commentId}`, {
         method: 'DELETE'
     });
     if (!res.ok) {

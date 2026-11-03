@@ -2,6 +2,7 @@ import { useCallback, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useModal } from "../contexts/ModalContext";
 import { login, logout } from "../store/authSlice";
+import { BASE_URL } from "../api/config";
 
 export class AuthExpiredError extends Error { }
 
@@ -26,7 +27,7 @@ export function useAuthFetch() {
         if (res.status !== 401) return res;
 
         refreshPromise ??= (async () => {
-            const r = await fetch('http://localhost:4000/api/auth/refresh', {
+            const r = await fetch(`${BASE_URL}/auth/refresh`, {
                 method: 'POST',
                 credentials: 'include',
             });

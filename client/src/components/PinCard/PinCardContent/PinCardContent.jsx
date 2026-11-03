@@ -10,6 +10,7 @@ import { useModal } from "../../../contexts/ModalContext";
 import { useAuthFetch } from "../../../hooks/useAuthFetch";
 import { showBoardSaveToast, showToast } from "../../../utils/toast/toast";
 import { boardKeys } from "../../../api/boards";
+import { BASE_URL } from "../../../api/config";
 
 function PinCardContent({ pin, context }) {
     const auth = useSelector(state => state.auth)
@@ -30,7 +31,7 @@ function PinCardContent({ pin, context }) {
 
     const { mutate: saveToBoard, isPending: isSavingToBoard } = useMutation({
         mutationFn: async ({ pinId, boardId }) => {
-            const res = await authFetch(`http://localhost:4000/api/boards/${boardId}/pins`, {
+            const res = await authFetch(`${BASE_URL}/boards/${boardId}/pins`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -63,7 +64,7 @@ function PinCardContent({ pin, context }) {
     // 해당 보드에서 핀 삭제 쿼리(저장됨 버튼 눌렀을 때)
     const { mutate: removeFromBoard, isPending: isRemovingFromBoard } = useMutation({
         mutationFn: async ({ pinId, boardId }) => {
-            const res = await authFetch(`http://localhost:4000/api/boards/${boardId}/pins/${pinId}`, {
+            const res = await authFetch(`${BASE_URL}/boards/${boardId}/pins/${pinId}`, {
                 method: 'DELETE'
             })
 

@@ -4,6 +4,7 @@ import { useEffect, useRef } from 'react';
 import Avatar from '../../Avatar/Avatar';
 import CommentItem from '../CommentItem/CommentItem';
 import { commentKeys } from '../../../hooks/comments/queryKeys';
+import { BASE_URL } from '../../../api/config';
 
 export default function CommentList({ pin, scrollRef, commentsExpanded, handleToggleExpandComments }) {
     const sentinelRef = useRef(null);
@@ -18,8 +19,8 @@ export default function CommentList({ pin, scrollRef, commentsExpanded, handleTo
 
     async function fetchComments(pageParam) {
         const url = pageParam
-            ? `http://localhost:4000/api/pins/${pin._id}/comments?cursor=${pageParam}&limit=5` // 첫 페이지 외 다음 페이지 요청
-            : `http://localhost:4000/api/pins/${pin._id}/comments?limit=5`; // 첫 페이지 요청
+            ? `${BASE_URL}/pins/${pin._id}/comments?cursor=${pageParam}&limit=5` // 첫 페이지 외 다음 페이지 요청
+            : `${BASE_URL}/pins/${pin._id}/comments?limit=5`; // 첫 페이지 요청
         const res = await fetch(url);
         const data = await res.json();
         if (!res.ok) {

@@ -24,6 +24,7 @@ import Profile from './pages/Profile/Profile'
 import { ModalProvider } from './contexts/ModalProvider'
 import { Toaster } from 'react-hot-toast';
 import Search from './pages/Search/Search'
+import { BASE_URL } from './api/config'
 
 function App() {
   const dispatch = useDispatch()
@@ -37,7 +38,7 @@ function App() {
 
   async function handleLogout() {
     try {
-      const res = await fetch('http://localhost:4000/api/auth/logout', {
+      const res = await fetch(`${BASE_URL}/auth/logout`, {
         method: 'POST',
         credentials: 'include',
         headers: { 'Content-Type': 'application/json' }

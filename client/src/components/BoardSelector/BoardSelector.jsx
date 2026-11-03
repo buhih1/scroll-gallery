@@ -5,6 +5,7 @@ import { useQuery } from '@tanstack/react-query';
 import useClickOutside from '../../hooks/useClickOutside';
 import { useModal } from '../../contexts/ModalContext';
 import { boardKeys } from '../../api/boards';
+import { BASE_URL } from '../../api/config';
 
 export default function BoardSelector({
     isOpen,
@@ -21,7 +22,7 @@ export default function BoardSelector({
         queryKey: boardKeys.selector(auth.user._id),
         queryFn: async () => {
             if (!auth.user.username) throw new Error('로그인 정보가 없습니다.')
-            const res = await fetch(`http://localhost:4000/api/users/${auth.user.username}/boards?limit=50`);
+            const res = await fetch(`${BASE_URL}/users/${auth.user.username}/boards?limit=50`);
             const resData = await res.json();
             if (!res.ok) throw new Error(resData.error || '보드 목록을 불러오지 못했습니다.');
             return resData;
