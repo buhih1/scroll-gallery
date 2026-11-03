@@ -1,0 +1,138 @@
+.header {
+    /* width: 85%;
+    margin: 0 auto; */
+    padding: 16px 16px;
+}
+
+.headerInner {
+    margin: auto;
+    padding: 32px 0;
+    display: flex;
+    justify-content: space-between;
+}
+
+.headerInfo h1 {
+    font-size: var(--font-size-3xl);
+    line-height: 1.2;
+    letter-spacing: -0.5px;
+    font-width: var(--font-weight-bold);
+    word-wrap: break-word;
+    margin: 0 6px 6px 6px;
+}
+
+.pinCount {
+    margin: 6px;
+    color: var(--color-text-subtle);
+    font-weight: var(--font-weight-regular);
+    font-size: var(--font-size-sm);
+    letter-spacing: 0;
+    line-height: 1.5;
+}
+
+.description {
+    margin: 6px;
+    line-height: 1.5;
+}
+
+.headerActions {
+    display: flex;
+    gap: 8px;
+    align-self: flex-start;
+}
+
+.headerActions Button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.shareButton {
+    gap: 6px;
+}
+
+
+.moreButton {
+    position: relative;
+}
+
+/* moreOptions */
+.moreOptions {
+    z-index: 1;
+    min-height: 40px;
+    min-width: 180px;
+    max-width: 284px;
+    max-height: 90vh;
+    overflow: auto;
+    box-shadow: 0px 3px 12px 0px rgba(0, 0, 0, .2);
+    border-radius: var(--border-radius-base);
+    position: absolute;
+    top: 130%;
+    background-color: var(--color-bg);
+}
+
+.moreOptionsButtons {
+    margin: 12px;
+}
+
+.moreOptionsLabel {
+    padding: 8px 12px;
+    line-height: 1.4;
+    color: var(--color-text-neutral);
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-medium);
+}
+
+.moreOptionsButtons button {
+    width: 100%;
+    text-align: left;
+    border-radius: var(--border-radius-sm);
+    padding: 8px 12px;
+    font-weight: var(--font-weight-medium);
+    display: block;
+}
+
+.moreOptionsButtons button:hover {
+    background-color: var(--color-hover-background-default);
+}
+
+.bar {
+    padding: 0 16px;
+}
+
+.barInner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+}
+
+.search {
+    position: relative;
+    width: 470px;
+}
+
+.searchIcon {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    left: 17px;
+    bottom: 0;
+    top: 0;
+}
+
+.searchInput {
+    padding: 12px 12px 12px 40px;
+    width: 100%;
+    border: 1px solid var(--color-border-interactive);
+    border-radius: var(--border-radius-lg);
+    min-height: 48px;
+}
+
+.searchInput:focus {
+    outline: 2px solid var(--color-border-focus-outer-default);
+    border: 1px solid var(--color-border-focus-inner-default);
+}
+
+.settingButton {
+    cursor: pointer;
+}

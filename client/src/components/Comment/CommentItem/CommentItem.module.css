@@ -1,0 +1,179 @@
+.comment {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.commentAvatar {
+    cursor: pointer;
+    align-self: self-start;
+}
+
+.commentRight {
+    min-width: 0;
+}
+
+.commentUsername,
+.foldedCommentUsername {
+    font-weight: var(--font-weight-bold);
+    line-height: 1.5;
+    flex-shrink: 0;
+}
+
+.commentUsername:hover {
+    text-decoration: underline;
+}
+
+.commentText {
+    min-width: 0;
+    margin-right: 12px;
+    color: var(--color-text-neutral);
+    line-height: 1.5;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.commentText.expanded {
+    white-space: normal;
+    overflow-wrap: anywhere;
+}
+
+.commentActions {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+
+.commentDate {
+    color: var(--color-text-subtle);
+}
+
+.commentReplyButton {
+    color: var(--color-text-subtle);
+    font-weight: var(--font-weight-bold);
+}
+
+.commentMoreButton {
+    position: relative;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: var(--border-radius-sm);
+}
+
+.commentMoreButton:hover {
+    background-color: var(--color-hover-background-default);
+}
+
+/* moreOptions */
+.moreOptions {
+    z-index: 1;
+    min-height: 40px;
+    min-width: 180px;
+    max-width: 284px;
+    max-height: 90vh;
+    overflow: auto;
+    box-shadow: 0px 3px 12px 0px rgba(0, 0, 0, .2);
+    border-radius: var(--border-radius-base);
+    position: absolute;
+    top: 130%;
+    background-color: var(--color-bg);
+}
+
+.moreOptionsButtons {
+    margin: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.moreOptionsButtons button {
+    width: 100%;
+    text-align: left;
+    border-radius: var(--border-radius-sm);
+    padding: 8px 12px;
+    font-weight: var(--font-weight-medium);
+}
+
+.moreOptionsButtons button:hover {
+    background-color: var(--color-hover-background-default);
+}
+
+/* 대댓글 input */
+
+.replyForm {
+    margin-top: 12px;
+    margin-left: 48px;
+}
+
+.replyFormInput {
+    border: 1px solid var(--color-border-decorative);
+    border-radius: var(--border-radius-lg);
+    display: flex;
+    align-items: center;
+    width: 100%;
+    cursor: text;
+    padding: 12px 16px;
+    height: 100%;
+    max-height: 146px;
+    width: 100%;
+}
+
+.replyFormInput textarea {
+    display: block;
+    width: 100%;
+    resize: none;
+    field-sizing: content;
+    line-height: 1.2;
+    min-height: 1lh;
+    max-height: 5lh;
+}
+
+.replyFormInput textarea::placeholder {
+    color: #9197a3;
+}
+
+.replyFormButtons {
+    margin-top: 16px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+}
+
+/* 대댓글 */
+.replies {
+    margin-top: 16px;
+    margin-left: 48px;
+
+}
+
+.repliesMoreButton {
+    gap: 8px;
+    color: var(--color-text-subtle);
+    font-weight: var(--font-weight-bold);
+    line-height: 1.5;
+    font-size: var(--font-size-xs);
+    text-align: left;
+    display: flex;
+    align-items: center;
+    vertical-align: middle;
+    cursor: pointer;
+    margin-bottom: 16px;
+}
+
+.repliesMoreButton> :nth-child(1) {
+    font-size: var(--font-size-sm);
+}
+
+.repliesList {
+    padding-top: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    scrollbar-gutter: stable;
+    overflow: auto;
+    max-height: 722px;
+}

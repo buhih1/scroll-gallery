@@ -1,0 +1,115 @@
+.commentList,
+.commentList.expanded {
+    /* margin-top: 8px; */
+    padding-top: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    scrollbar-gutter: stable;
+    max-height: 722px;
+    cursor: auto;
+    overflow: auto;
+}
+
+.commentList {
+    cursor: pointer;
+}
+
+.comment {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.commentAvatar {
+    cursor: pointer;
+    align-self: self-start;
+}
+
+.commentRight {
+    min-width: 0;
+}
+
+.foldedCommentUsername {
+    font-weight: var(--font-weight-bold);
+    line-height: 1.5;
+    flex-shrink: 0;
+}
+
+.commentText {
+    min-width: 0;
+    margin-right: 12px;
+    color: var(--color-text-neutral);
+    line-height: 1.5;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.commentText.expanded {
+    white-space: normal;
+    overflow-wrap: anywhere;
+}
+
+/* 
+.commentActions {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+
+.commentDate {
+    color: var(--color-text-subtle);
+}
+
+.commentReplyButton {
+    color: var(--color-text-subtle);
+    font-weight: var(--font-weight-bold);
+}
+
+.commentMoreButton {
+    width: 24px;
+    height: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: var(--border-radius-sm);
+}
+
+.commentMoreButton:hover {
+    background-color: var(--color-hover-background-default);
+}
+
+.replies {
+    margin-top: 16px;
+    margin-left: 48px;
+
+}
+
+.repliesMoreButton {
+    gap: 8px;
+    color: var(--color-text-subtle);
+    font-weight: var(--font-weight-bold);
+    line-height: 1.5;
+    font-size: var(--font-size-xs);
+    text-align: left;
+    display: flex;
+    align-items: center;
+    vertical-align: middle;
+    cursor: pointer;
+    margin-bottom: 16px;
+}
+
+.repliesMoreButton> :nth-child(1) {
+    font-size: var(--font-size-sm);
+}
+
+.repliesList {
+    padding-top: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    scrollbar-gutter: stable;
+    overflow: auto;
+    max-height: 722px;
+} */

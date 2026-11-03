@@ -1,0 +1,116 @@
+:root {
+    --color-primary: #e60023;
+    --color-secondary: #ffffff;
+    --color-bg: #ffffff;
+    --color-bg-secondary: #e5e5e0;
+    --color-bg-tertiary: rgb(246, 246, 243);
+    --color-text: #111111;
+
+    --font-size-xs: 12px;
+    --font-size-sm: 14px;
+    --font-size-base: 16px;
+    --font-size-lg: 20px;
+    --font-size-xl: 24px;
+    --font-size-2xl: 28px;
+    --font-size-3xl: 36px;
+
+    --font-weight-regular: 400;
+    --font-weight-medium: 500;
+    --font-weight-semibold: 600;
+    --font-weight-bold: 700;
+    --font-weight-extrabold: 800;
+
+    --lh-tight: 1.2;
+    --lh-normal: 1.5;
+    --lh-loose: 2;
+
+    --border-radius-sm: 8px;
+    --border-radius-base: 12px;
+    --border-radius-lg: 16px;
+    --border-radius-xl: 20px;
+    --border-radius-xxl: 24px;
+    --border-radius-2xl: 32px;
+
+    --button-color-hover-background-primary-default: #cc001f;
+    --button-color-hover-background-secondary-default: #dadad3;
+    --button-color-hover-background-transparent-inverse-default: rgba(24, 24, 22, .5);
+    --button-color-hover-background-transparent-default: hsla(60, 14%, 96%, .5);
+    --button-color-background-primary-selected: #33332e;
+    --button-color-hover-background-selected: #262622;
+
+    --color-hover-background-default: #f6f6f3;
+
+    --color-text-error: #b60c0c;
+    --color-text-subtle: #62625b;
+    --color-text-disabled: #91918c;
+    --color-text-neutral: #494943;
+    --color-text-link: #2b48d4;
+
+    --color-icon-subtle: #62625b;
+
+    --color-border-error: #dd0e0e;
+    --color-border-decorative: #c8c8c1;
+    --color-border-interactive: #91918c;
+    --color-border-dark-decorative: #494943;
+    --color-border-focus-outer-default: #435ee5;
+    --color-border-focus-inner-default: #fff;
+
+    --color-icon-error: #dd0e0e;
+
+    --color-background-selected: #33332e;
+
+    /* --comp-buttontoggle-color-background-default-enabled-strong: #33332e; */
+    --color-text-inverse: #fff;
+    /* --comp-buttontoggle-color-hover-background-default-enabled-strong: #262622; */
+}
+
+/* reset.css */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html,
+body {
+    height: 100%;
+    font-family: 'Pretendard', "Montserrat", 'Noto Sans KR', sans-serif;
+}
+
+h1,
+h2,
+.main-title {
+    font-smooth: antialiased;
+    text-rendering: optimizeLegibility;
+    text-shadow: 0 0 1px rgba(0, 0, 0, 0.1);
+}
+
+ul,
+ol {
+    list-style: none;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+button {
+    border: none;
+    background: none;
+    cursor: pointer;
+    font: inherit;
+}
+
+input,
+textarea,
+select {
+    font: inherit;
+    border: none;
+    outline: none;
+}
+
+img {
+    display: block;
+    max-width: 100%;
+}

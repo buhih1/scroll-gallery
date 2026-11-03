@@ -1,0 +1,128 @@
+.modalOverlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    z-index: 1000;
+}
+
+.modalContainer {
+    width: 450px;
+    position: relative;
+    margin: auto;
+    box-shadow: 0px 3px 12px 0px rgba(0, 0, 0, 0.2);
+}
+
+.modalWrap {
+    background: var(--color-bg);
+    border-radius: var(--border-radius-xl);
+}
+
+.closeContainer {
+    margin: 16px;
+    height: 48px;
+    width: 48px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: var(--border-radius-lg);
+    cursor: pointer;
+}
+
+.closeContainer:hover {
+    background: var(--color-bg-tertiary);
+}
+
+.modal {
+    padding: 24px;
+}
+
+.modalHeader {}
+
+.logoContainer {
+    background: var(--color-bg-tertiary);
+    border-radius: var(--border-radius-lg);
+    width: 64px;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 16px;
+}
+
+.logo {
+    color: var(--color-primary);
+    font-size: 36px;
+}
+
+.modalHeader h1 {
+    font-size: var(--font-size-2xl);
+    line-height: var(--lh-tight);
+}
+
+.modalHeader p {
+    margin-top: 4px;
+    line-height: var(--lh-normal);
+}
+
+.modalBody {
+    margin: 24px 0;
+}
+
+.form input {
+    width: 100%;
+    border: 1px solid #91918c;
+    border-radius: var(--border-radius-base);
+    padding: 15px 11px;
+}
+
+.form input:focus {
+    border: 1px solid var(--color-bg);
+    outline: 2px solid var(--color-border-focus-outer-default);
+}
+
+.form input[type="email"] {
+    margin-bottom: 7px;
+}
+
+.form p {
+    font-size: 12px;
+}
+
+.form .alert {
+    padding: 0 12px;
+    margin: 8px 0;
+    color: rgb(98, 98, 91);
+}
+
+.form Button {
+    width: 100%;
+    margin-top: 16px;
+}
+
+.error {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    color: var(--color-text-error);
+    padding-left: 12px;
+    padding-top: 8px;
+}
+
+input.errorBorder {
+    border: 1.5px solid var(--color-border-error);
+}
+
+.modalFooter a {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.termsNotice {
+    margin-top: 16px;
+    font-size: 12px;
+    color: rgb(98, 98, 91);
+}

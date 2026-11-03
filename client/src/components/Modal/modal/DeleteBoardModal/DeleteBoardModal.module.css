@@ -1,0 +1,28 @@
+.modalContent {
+    text-align: center;
+}
+
+.title {
+    padding: 24px;
+}
+
+.message {
+    padding: 16px;
+}
+
+.bold {
+    font-weight: var(--font-weight-bold);
+}
+
+.buttons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    padding: 24px;
+}
+
+.globalAlert {
+    padding: 0 24px;
+    color: var(--color-text-error);
+}

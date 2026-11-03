@@ -1,0 +1,94 @@
+.overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    background: hsla(60, 2%, 45%, .4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal {
+    width: 540px;
+    background: var(--color-bg);
+    max-height: calc(100vh - 32px);
+    margin-left: 16px;
+    margin-right: 16px;
+    border-radius: var(--border-radius-xl);
+    box-shadow: 0px 3px 12px 0px rgba(0, 0, 0, .2);
+    overflow: auto;
+}
+
+.title {
+    padding: 56px 24px;
+    text-align: center;
+    font-weight: var(--font-weight-bold);
+    letter-spacing: -0.5px;
+    line-height: 1.2;
+}
+
+.formTop {
+    padding: 0 32px;
+}
+
+.formBottom {
+    padding: 24px;
+    display: flex;
+    justify-content: end;
+}
+
+.boardNameInput label {
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-medium);
+    display: block;
+    margin-bottom: 8px;
+    color: #211922;
+}
+
+.boardNameInput .input {
+    width: 100%;
+    padding: 11px 15px;
+    border-radius: var(--border-radius-lg);
+    border: 1px solid var(--color-border-dark-decorative);
+    line-height: 1.5;
+}
+
+.boardNameInput .input:focus {
+    outline: 2px solid var(--color-border-focus-outer-default);
+    border: 1px solid var(--color-border-focus-inner-default);
+}
+
+.boardNameInput .input.alertInput {
+    border: 1.5px solid var(--color-border-error);
+}
+
+.boardNameInput .input.alertInput:focus {
+    border: 1px solid var(--color-border-focus-inner-default);
+}
+
+.alert {
+    padding-left: 16px;
+    padding-top: 8px;
+    display: flex;
+    margin: -4px;
+}
+
+.alertIcon {
+    color: var(--color-icon-error);
+    margin: 4px;
+}
+
+.alertMessage {
+    margin: 4px;
+    color: var(--color-text-error);
+    text-align: left;
+    font-weight: var(--font-weight-regular);
+    line-height: 1.5;
+    letter-spacing: 0;
+    font-size: var(--font-size-xs);
+}
+
+.globalAlert {
+    padding: 0 24px 24px 24px;
+    color: var(--color-text-error);
+}

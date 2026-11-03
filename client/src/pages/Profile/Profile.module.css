@@ -1,0 +1,173 @@
+.header {
+    width: 85%;
+    margin: 0 auto;
+}
+
+.profile {
+    padding: 48px 0;
+    width: 540px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.profileHeader {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    margin: 6px 0;
+}
+
+.profileName h1 {
+    margin: 2px;
+    font-size: var(--font-size-2xl);
+    line-height: 1.2;
+    letter-spacing: -0.5px;
+    font-width: var(--font-weight-bold);
+}
+
+.profileName p {
+    margin: 2px;
+    color: var(--color-text-subtle);
+    font-weight: var(--font-weight-regular);
+    font-size: var(--font-size-sm);
+    letter-spacing: 0;
+    line-height: 1.5;
+}
+
+.profileFollow {
+    margin: 6px 0;
+    line-height: 1.5;
+    font-weight: var(--font-weight-bold);
+    font-size: var(--font-size-sm);
+}
+
+.profileBio {}
+
+.profileButton {
+    padding-top: 12px;
+    display: flex;
+    gap: 8px;
+}
+
+.sticky {
+    background: #fff;
+    position: sticky;
+    top: 80px;
+    z-index: 1;
+}
+
+.tabBar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 85%;
+    margin: 0 auto;
+}
+
+.tab {
+    padding: 8px 12px;
+    cursor: pointer;
+    position: relative;
+}
+
+.tab p {
+    font-size: 18px;
+    font-weight: var(--font-weight-medium);
+    line-height: 1.8;
+}
+
+.buttonBar {
+    position: absolute;
+    bottom: 8px;
+    left: 12px;
+    width: calc(100% - 24px);
+    cursor: pointer;
+    height: 2px;
+    background-color: var(--color-background-selected);
+}
+
+.toolbar {
+    width: 85%;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 16px;
+}
+
+.leftTool {
+    display: flex;
+    align-items: center;
+}
+
+.settingButton {
+    height: 48px;
+    width: 48px;
+    margin: 4px;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    perspective: 1px;
+}
+
+.filterButton {
+    margin: 4px;
+    padding: 6px 10px;
+    font-size: var(--font-size-sm);
+    line-height: 1.3;
+    min-height: 36px;
+    border-radius: var(--border-radius-base);
+    min-width: 60px;
+    font-weight: var(--font-weight-medium);
+}
+
+.createdByMe {
+    background: var(--button-color-background-primary-selected);
+    color: var(--color-text-inverse);
+}
+
+.createdByMe:hover {
+    background: var(--button-color-hover-background-selected);
+}
+
+.boardsGrid {
+    padding: 1px 8px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(clamp(220px, 18vw, 340px), 1fr));
+    gap: 16px;
+    margin-bottom: 8px;
+}
+
+.createOptions {
+    min-height: 40px;
+    min-width: 180px;
+    max-width: 284px;
+    max-height: 90vh;
+    overflow: auto;
+    box-shadow: 0px 3px 12px 0px rgba(0, 0, 0, .2);
+    border-radius: var(--border-radius-base);
+    position: absolute;
+    right: 10px;
+    top: 90%;
+    background-color: var(--color-bg);
+}
+
+.createOptionsButtons {
+    margin: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.createOptionsButtons button {
+    width: 100%;
+    text-align: start;
+    border-radius: var(--border-radius-sm);
+    padding: 8px 12px;
+    font-weight: var(--font-weight-medium);
+}
+
+.createOptionsButtons button:hover {
+    background-color: var(--color-hover-background-default);
+}

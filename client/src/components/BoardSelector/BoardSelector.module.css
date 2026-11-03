@@ -1,0 +1,114 @@
+.overlay {
+    border-radius: var(--border-radius-lg);
+    box-shadow: 0px 3px 12px 0px rgba(0, 0, 0, .2);
+    background: var(--color-bg);
+    overflow: hidden;
+}
+
+.search {
+    margin: 12px;
+    position: relative;
+}
+
+.searchIcon {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    left: 17px;
+    bottom: 0;
+    top: 0;
+}
+
+.searchInput {
+    padding: 12px 12px 12px 40px;
+    width: 100%;
+    border: 1px solid var(--color-border-interactive);
+    border-radius: var(--border-radius-lg);
+    min-height: 48px;
+}
+
+.searchInput:focus {
+    outline: 2px solid var(--color-border-focus-outer-default);
+    border: 1px solid var(--color-border-focus-inner-default);
+}
+
+.boardList {
+    overflow-y: scroll;
+    max-height: 200px;
+}
+
+.boardListLabel {
+    padding: 4px 12px;
+    margin-top: 4px;
+    font-size: var(--font-size-sm);
+}
+
+.boardItem {
+    margin: 4px 12px;
+    height: 52px;
+    display: flex;
+    align-items: center;
+    border-radius: var(--border-radius-base);
+    cursor: pointer;
+    padding: 8px;
+    text-align: left;
+    font-weight: var(--font-weight-bold);
+    word-break: break-all;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased;
+}
+
+.boardItem:hover {
+    background: var(--color-bg-secondary);
+}
+
+hr {
+    border-color: var(--color-border-decorative);
+    border-bottom: 0;
+    border-left: 0;
+    border-right: 1px solid var(--color-border-decorative);
+    border-top: 1px solid var(--color-border-decorative);
+}
+
+.createBoardButton {
+    padding: 12px;
+    border-bottom-right-radius: 8px;
+    border-bottom-left-radius: 8px;
+    height: 52px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+}
+
+.createBoardButton:hover {
+    background: var(--color-bg-secondary);
+}
+
+.createBoardButtonIcon {
+    margin-right: 20px;
+    margin-left: 16px;
+}
+
+.createBoardButtonIcon svg {
+    vertical-align: middle;
+}
+
+.createBoardButtonText {
+    font-weight: var(--font-weight-bold);
+}
+
+.hidden {
+    display: none;
+}
+
+input::placeholder,
+textarea::placeholder,
+.placeholderTextColor {
+    color: var(--color-text-subtle);
+}
+
+.emptyLabel {
+    padding-top: 10px;
+    padding-left: 20px;
+    padding-bottom: 20px;
+}

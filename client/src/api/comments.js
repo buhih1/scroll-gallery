@@ -1,0 +1,20 @@
+export const postComment = async (authFetch, pinId, { text, replyToCommentId }) => {
+    const res = await authFetch(`http://localhost:4000/api/pins/${pinId}/comments`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text, replyToCommentId }),
+    })
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error);
+    return data;
+}
+
+export const deleteComment = async (authFetch, pinId, commentId) => {
+    const res = await authFetch(`http://localhost:4000/api/pins/${pinId}/comments/${commentId}`, {
+        method: 'DELETE'
+    });
+    if (!res.ok) {
+        const data = await res.json();
+        throw new Error(data.error);
+    }
+}

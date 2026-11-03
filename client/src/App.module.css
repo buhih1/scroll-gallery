@@ -1,0 +1,9 @@
+.container {
+    padding-top: 80px;
+    padding-left: 72px;
+    transition: padding 0.3s ease;
+}
+
+.shifted {
+    padding-left: 440px;
+}

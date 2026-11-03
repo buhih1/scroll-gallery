@@ -1,0 +1,12 @@
+.imgContainer {
+    display: flex;
+    gap: 20px;
+    margin: 20px;
+}
+
+.imgColumn {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    flex: 1
+}
