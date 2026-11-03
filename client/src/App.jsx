@@ -24,7 +24,6 @@ import Profile from './pages/Profile/Profile'
 import { ModalProvider } from './contexts/ModalProvider'
 import { Toaster } from 'react-hot-toast';
 import Search from './pages/Search/Search'
-import SplashScreen from './components/SplashScreen/SplashScreen'
 
 function App() {
   const dispatch = useDispatch()
