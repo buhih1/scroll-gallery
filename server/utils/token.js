@@ -6,8 +6,8 @@ function generateAccessToken(userId) {
     return jwt.sign(
         { userId: userId },
         process.env.JWT_ACCESS_TOKEN_SECRET,
-        // { expiresIn: '1h' }
-        { expiresIn: '5s' }
+        { expiresIn: '1h' }
+        // { expiresIn: '5s' }
     )
 }
 
