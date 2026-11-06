@@ -1,0 +1,119 @@
+name: CI/CD
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: |
+            client/package-lock.json
+            server/package-lock.json
+
+      - name: Client - install
+        working-directory: client
+        run: npm ci
+
+      - name: Client - lint
+        working-directory: client
+        run: npm run lint
+
+      - name: Client - build
+        working-directory: client
+        env:
+          VITE_API_URL: /api
+        run: npm run build
+
+      - name: Server - install
+        working-directory: server
+        run: npm ci
+
+      - name: Server - syntax check
+        working-directory: server
+        run: find . -name '*.js' -not -path './node_modules/*' -print0 | xargs -0 -n1 node --check
+
+      - name: Upload client build
+        if: github.event_name == 'push'
+        uses: actions/upload-artifact@v4
+        with:
+          name: client-dist
+          path: client/dist
+          retention-days: 1
+
+  deploy:
+    needs: ci
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    concurrency:
+      group: deploy
+      cancel-in-progress: false
+    env:
+      SSH_HOST: ${{ secrets.SSH_HOST }}
+      SSH_USER: ${{ secrets.SSH_USER }}
+    steps:
+      - name: Download client build
+        uses: actions/download-artifact@v4
+        with:
+          name: client-dist
+          path: dist
+
+      - name: Prepare SSH
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          SSH_KNOWN_HOSTS: ${{ secrets.SSH_KNOWN_HOSTS }}
+        run: |
+          install -m 700 -d ~/.ssh
+          printf '%s\n' "$SSH_PRIVATE_KEY" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          printf '%s\n' "$SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts
+          cat > ~/.ssh/config <<CONF
+          Host target
+            HostName $SSH_HOST
+            User $SSH_USER
+            IdentityFile ~/.ssh/deploy_key
+            IdentitiesOnly yes
+            StrictHostKeyChecking yes
+            BatchMode yes
+          CONF
+          chmod 600 ~/.ssh/config
+
+      - name: Deploy server (git pull, npm ci if lockfile changed, pm2 restart)
+        run: |
+          ssh target 'bash -s' <<'REMOTE'
+          set -euo pipefail
+          cd ~/scroll-gallery
+          OLD=$(git rev-parse HEAD)
+          git pull --ff-only
+          if ! git diff --quiet "$OLD" HEAD -- server/package-lock.json; then
+            (cd server && npm ci --omit=dev)
+          fi
+          pm2 restart api
+          REMOTE
+
+      - name: Deploy client (rsync to Nginx root)
+        run: |
+          rsync -az --delete --chmod=D755,F644 -e ssh \
+            dist/ target:/var/www/scroll-gallery/
+
+      - name: Health check
+        run: |
+          for i in $(seq 1 10); do
+            if curl -fsS -m 10 -o /dev/null "https://scrollgallery.duckdns.org/api/pins?limit=1"; then
+              echo "OK"; exit 0
+            fi
+            sleep 3
+          done
+          echo "health check failed"; exit 1
