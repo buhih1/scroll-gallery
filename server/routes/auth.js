@@ -135,70 +135,77 @@ router.post('/login', async (req, res) => {
 })
 
 router.post('/logout', async (req, res) => {
-    const oldToken = req.cookies.refreshToken;
-    if (oldToken) {
-        const db = getDB();
-        await db.collection('refreshTokens').deleteOne({ token: oldToken });
+    try {
+        const oldToken = req.cookies.refreshToken;
+        if (oldToken) {
+            const db = getDB();
+            await db.collection('refreshTokens').deleteOne({ token: oldToken });
+        }
+        res.clearCookie('refreshToken', {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'strict'
+        });
+        return res.status(204).end();
+    } catch (error) {
+        console.error(error)
+        return res.status(500).json({ error: '서버 내부 오류가 발생했습니다.' })
     }
-    res.clearCookie('refreshToken', {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
-        sameSite: 'strict'
-    });
-    return res.status(204).end();
 })
 
 router.post('/refresh', async (req, res) => {
-    const db = getDB();
-    const collection = db.collection('refreshTokens');
-    const oldToken = req.cookies.refreshToken;
-    if (!oldToken) return res.status(401).json({ error: 'No refresh token' });
+    try {
+        const db = getDB();
+        const collection = db.collection('refreshTokens');
+        const oldToken = req.cookies.refreshToken;
+        if (!oldToken) return res.status(401).json({ error: 'No refresh token' });
 
-    const stored = await collection.findOne({ token: oldToken })
-    if (!stored) {
-        return res.status(403).json({ error: 'Token reuse detected. Please log in again.' })
+        const deletedToken = await collection.findOneAndDelete({ token: oldToken });
+        if (!deletedToken) {
+            return res.status(403).json({ error: 'Token reuse detected. Please log in again.' })
+        }
+
+        if (deletedToken.expiresAt < new Date()) {
+            return res.status(403).json({ error: 'Refresh token expired' })
+        }
+
+        const userDoc = await db.collection('users').findOne({ _id: new ObjectId(deletedToken.userId) });
+        if (!userDoc) {
+            return res.status(403).json({ error: '사용자를 찾을 수 없습니다. 다시 로그인해주세요.' })
+        }
+        const newAccessToken = generateAccessToken(deletedToken.userId);
+        const newRefreshToken = generateRefreshToken();
+
+        await collection.insertOne({
+            token: newRefreshToken,
+            userId: deletedToken.userId,
+            expiresAt: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000),
+            createdAt: new Date()
+        });
+
+        res.cookie('refreshToken', newRefreshToken, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'strict',
+            maxAge: 14 * 24 * 60 * 60 * 1000
+        });
+
+        res.json({
+            user: {
+                _id: userDoc._id,
+                username: userDoc.username,
+                email: userDoc.email,
+                birth: userDoc.birth,
+                createdAt: userDoc.createdAt,
+                avatarUrl: userDoc.avatarUrl,
+                bio: userDoc.bio
+            },
+            accessToken: newAccessToken
+        });
+    } catch (error) {
+        console.error(error)
+        return res.status(500).json({ error: '서버 내부 오류가 발생했습니다.' })
     }
-
-    if (stored.expiresAt < new Date()) {
-        await collection.deleteOne({ _id: stored._id });
-        return res.status(403).json({ error: 'Refresh token expired' })
-    }
-
-    await collection.deleteOne({ _id: stored._id });
-
-    const userDoc = await db.collection('users').findOne({ _id: new ObjectId(stored.userId) });
-    if (!userDoc) {
-        return res.status(403).json({ error: '사용자를 찾을 수 없습니다. 다시 로그인해주세요.' })
-    }
-    const newAccessToken = generateAccessToken(stored.userId);
-    const newRefreshToken = generateRefreshToken();
-
-    await collection.insertOne({
-        token: newRefreshToken,
-        userId: stored.userId,
-        expiresAt: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000),
-        createdAt: new Date()
-    });
-
-    res.cookie('refreshToken', newRefreshToken, {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
-        sameSite: 'strict',
-        maxAge: 14 * 24 * 60 * 60 * 1000
-    });
-
-    res.json({
-        user: {
-            _id: userDoc._id,
-            username: userDoc.username,
-            email: userDoc.email,
-            birth: userDoc.birth,
-            createdAt: userDoc.createdAt,
-            avatarUrl: userDoc.avatarUrl,
-            bio: userDoc.bio
-        },
-        accessToken: newAccessToken
-    });
 })
 
 module.exports = router;
