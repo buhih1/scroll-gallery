@@ -6,9 +6,8 @@ const { PutObjectCommand, DeleteObjectCommand } = require('@aws-sdk/client-s3')
 const crypto = require('crypto')
 const sharp = require('sharp')
 const verifyToken = require('../middleware/auth')
-const path = require('path')
 const s3 = require('../s3')
-const upload = require('../middleware/upload')
+const uploadImage = require('../middleware/upload')
 
 // Pin {
 //   _id: ObjectId,
@@ -43,7 +42,7 @@ const upload = require('../middleware/upload')
 // - Response: `201` -> `{ pin: Pin }`
 // - 에러: `400`(boardId 누락, link 형식 오류 등), `404`(boardId가 존재하지 않음)
 
-router.post('/', verifyToken, upload.single('image'), async (req, res) => {
+router.post('/', verifyToken, uploadImage, async (req, res) => {
     try {
         const { title, description, link, boardId } = req.body;
 
@@ -93,7 +92,19 @@ router.post('/', verifyToken, upload.single('image'), async (req, res) => {
         }
 
         const id = crypto.randomUUID();
-        const originalExt = path.extname(req.file.originalname) || '.jpg';
+        let metadata
+        try {
+            metadata = await sharp(req.file.buffer).metadata();
+        } catch {
+            return res.status(400).json({ error: '이미지 파일을 읽을 수 없습니다.' });
+        }
+
+        const FORMAT_EXT = { jpeg: '.jpg', png: '.png', webp: '.webp', gif: '.gif' };
+        const originalExt = FORMAT_EXT[metadata.format];
+        if (!originalExt) {
+            return res.status(415).json({ error: '지원하지 않는 이미지 형식입니다.' });
+        }
+        const originalContentType = `image/${metadata.format}`;
         const originalKey = `originals/${id}${originalExt}`;
         const optimizedKey = `optimized/${id}.webp`;
 
@@ -107,7 +118,7 @@ router.post('/', verifyToken, upload.single('image'), async (req, res) => {
             Bucket: process.env.R2_BUCKET_NAME,
             Key: originalKey,
             Body: req.file.buffer,
-            ContentType: req.file.mimetype,
+            ContentType: originalContentType,
         })
 
         const optimizedCommand = new PutObjectCommand({
