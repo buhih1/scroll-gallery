@@ -7,7 +7,8 @@ const crypto = require('crypto')
 const sharp = require('sharp')
 const verifyToken = require('../middleware/auth')
 const s3 = require('../s3')
-const uploadImage = require('../middleware/upload')
+const uploadImage = require('../middleware/upload');
+const { isValidLink } = require('../utils/validators');
 
 // Pin {
 //   _id: ObjectId,
@@ -58,12 +59,8 @@ router.post('/', verifyToken, uploadImage, async (req, res) => {
             return res.status(400).json({ error: '설명은 800자를 초과할 수 없습니다.' });
         }
 
-        if (link) {
-            try {
-                new URL(link);
-            } catch {
-                return res.status(400).json({ error: '유효하지 않은 링크 형식입니다.' });
-            }
+        if (!isValidLink(link)) {
+            return res.status(400).json({ error: '유효하지 않은 링크 형식입니다.' });
         }
 
         // let tags = [];
@@ -311,12 +308,8 @@ router.patch('/:id', verifyToken, async (req, res) => {
         return res.status(400).json({ error: '설명은 800자를 초과할 수 없습니다.' });
     }
 
-    if (link) {
-        try {
-            new URL(link);
-        } catch {
-            return res.status(400).json({ error: '유효하지 않은 링크 형식입니다.' });
-        }
+    if (!isValidLink(link)) {
+        return res.status(400).json({ error: '유효하지 않은 링크 형식입니다.' });
     }
 
     if (!ObjectId.isValid(pinId)) {
