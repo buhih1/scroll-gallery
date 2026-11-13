@@ -132,6 +132,9 @@ router.post('/:id/pins', verifyToken, async (req, res) => {
         return res.status(201).json(boardPins)
 
     } catch (error) {
+        if (error.code === 11000) {
+            return res.status(409).json({ error: '이미 저장되었습니다.' })
+        }
         console.error(error)
         return res.status(500).json({ error: '서버 내부 오류가 발생했습니다.' })
     }
