@@ -20,7 +20,7 @@ router.post('/', verifyToken, async (req, res) => {
             return res.status(400).json({ error: '보드 이름을 지정하세요!' })
         }
 
-        if (name.length > 50) {
+        if (name.trim().length > 50) {
             return res.status(400).json({ error: '50자 이하로 입력하세요.' })
         }
 
@@ -262,7 +262,7 @@ router.patch('/:id', verifyToken, async (req, res) => {
             return res.status(400).json({ error: '유효하지 않은 ID입니다.' })
         }
 
-        if (!name) {
+        if (typeof name !== 'string' || name.trim().length === 0) {
             return res.status(400).json({ error: '보드 이름을 지정하세요!' })
         }
 
@@ -274,7 +274,7 @@ router.patch('/:id', verifyToken, async (req, res) => {
             return res.status(400).json({ error: '이름은 50자를 초과할 수 없습니다.' });
         }
 
-        if (description?.trim().length > 500) {
+        if (description.trim().length > 500) {
             return res.status(400).json({ error: '설명은 500자를 초과할 수 없습니다.' });
         }
 
