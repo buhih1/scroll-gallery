@@ -9,6 +9,7 @@ const verifyToken = require('../middleware/auth')
 const s3 = require('../s3')
 const uploadImage = require('../middleware/upload');
 const { isValidLink } = require('../utils/validators');
+const { parseLimit, parseCursor } = require('../utils/pagination');
 
 // Pin {
 //   _id: ObjectId,
@@ -228,9 +229,17 @@ router.post('/', verifyToken, uploadImage, async (req, res) => {
 
 router.get('/', async (req, res) => {
     try {
-        const cursor = req.query.cursor
-        const limit = Number(req.query.limit) || 10;
-        const filter = cursor ? { _id: { $lt: new ObjectId(cursor) } } : {};
+        const cursor = parseCursor(req.query.cursor);
+        if (cursor === null) {
+            return res.status(400).json({ error: '유효하지 않은 cursor 형식입니다.' })
+        }
+
+        const limit = parseLimit(req.query.limit);
+        if (limit === null) {
+            return res.status(400).json({ error: '유효하지 않은 limit입니다.' });
+        }
+
+        const filter = cursor ? { _id: { $lt: cursor } } : {};
 
         const db = getDB();
         const pins = await db.collection('pins')

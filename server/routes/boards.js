@@ -3,6 +3,7 @@ const router = express.Router();
 const { getDB, getClient } = require('../database');
 const { ObjectId } = require('mongodb');
 const verifyToken = require('../middleware/auth');
+const { parseLimit, parseCursor } = require('../utils/pagination');
 
 // Board {
 //   _id: ObjectId, 
@@ -143,8 +144,15 @@ router.post('/:id/pins', verifyToken, async (req, res) => {
 router.get('/:id/pins', async (req, res) => {
     try {
         const boardId = req.params.id;
-        const cursor = req.query.cursor;
-        const limit = Number(req.query.limit) || 10;
+        const cursor = parseCursor(req.query.cursor);
+        if (cursor === null) {
+            return res.status(400).json({ error: '유효하지 않은 cursor 형식입니다.' })
+        }
+
+        const limit = parseLimit(req.query.limit);
+        if (limit === null) {
+            return res.status(400).json({ error: '유효하지 않은 limit입니다.' });
+        }
 
         if (!ObjectId.isValid(boardId)) {
             return res.status(400).json({ error: '유효하지 않은 ID입니다.' })
@@ -156,7 +164,7 @@ router.get('/:id/pins', async (req, res) => {
             return res.status(404).json({ error: '보드가 존재하지 않습니다.' })
         }
 
-        const filter = cursor ? { _id: { $lt: new ObjectId(cursor) }, boardId: new ObjectId(boardId) } : { boardId: new ObjectId(boardId) };
+        const filter = cursor ? { _id: { $lt: cursor }, boardId: new ObjectId(boardId) } : { boardId: new ObjectId(boardId) };
 
         const boardPins = await db.collection('boardPins').aggregate([
             { $match: filter },
