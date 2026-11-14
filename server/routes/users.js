@@ -132,9 +132,6 @@ router.get('/:username/boards', async (req, res) => {
         res.status(200).json({ boards: trimmedBoards, nextCursor })
 
     } catch (error) {
-        if (error.name === 'BSONError' || error.message.includes('ObjectId')) {
-            return res.status(400).json({ error: '유효하지 않은 cursor 형식입니다.' });
-        }
         console.log(error)
         res.status(500).json({ error: '서버 내부 오류가 발생했습니다.' })
     }
@@ -170,9 +167,6 @@ router.get('/:username/pins', async (req, res) => {
 
         res.status(200).json({ pins: trimmedPins, nextCursor })
     } catch (error) {
-        if (error.name === 'BSONError' || error.message.includes('ObjectId')) {
-            return res.status(400).json({ error: '유효하지 않은 cursor 형식입니다.' });
-        }
         console.log(error)
         res.status(500).json({ error: '서버 내부 오류가 발생했습니다.' })
     }
