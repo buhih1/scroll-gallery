@@ -188,7 +188,7 @@ router.get('/:id/pins', async (req, res) => {
 
         const nextCursor = boardPins[limit] ? boardPins[limit - 1]._id : null;
         const trimmedBoardPins = boardPins.slice(0, limit);
-        const pins = trimmedBoardPins.map(boardPin => boardPin.pin);
+        const pins = trimmedBoardPins.map(boardPin => boardPin.pin).filter(pin => pin);
 
         return res.status(200).json({ pins, nextCursor });
     } catch (error) {
