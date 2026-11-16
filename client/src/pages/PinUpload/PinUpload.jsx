@@ -112,6 +112,9 @@ function PinUpload() {
                     ],
                 };
             })
+        },
+        onError: (error) => {
+            alert(error.message);
         }
     })
 
@@ -156,6 +159,7 @@ function PinUpload() {
         const maxSize = 20 * 1024 * 1024;
         if (file.size > maxSize) {
             alert('이미지 용량이 20MB를 초과하여 업로드하지 못했습니다.')
+            return;
         }
 
         setImageFile(file);

@@ -3,6 +3,7 @@ const router = express.Router();
 const { getDB, getClient } = require('../database');
 const { ObjectId } = require('mongodb');
 const verifyToken = require('../middleware/auth');
+const { parseLimit, parseCursor } = require('../utils/pagination');
 
 // Board {
 //   _id: ObjectId, 
@@ -20,7 +21,7 @@ router.post('/', verifyToken, async (req, res) => {
             return res.status(400).json({ error: '보드 이름을 지정하세요!' })
         }
 
-        if (name.length > 50) {
+        if (name.trim().length > 50) {
             return res.status(400).json({ error: '50자 이하로 입력하세요.' })
         }
 
@@ -132,6 +133,9 @@ router.post('/:id/pins', verifyToken, async (req, res) => {
         return res.status(201).json(boardPins)
 
     } catch (error) {
+        if (error.code === 11000) {
+            return res.status(409).json({ error: '이미 저장되었습니다.' })
+        }
         console.error(error)
         return res.status(500).json({ error: '서버 내부 오류가 발생했습니다.' })
     }
@@ -140,8 +144,15 @@ router.post('/:id/pins', verifyToken, async (req, res) => {
 router.get('/:id/pins', async (req, res) => {
     try {
         const boardId = req.params.id;
-        const cursor = req.query.cursor;
-        const limit = Number(req.query.limit) || 10;
+        const cursor = parseCursor(req.query.cursor);
+        if (cursor === null) {
+            return res.status(400).json({ error: '유효하지 않은 cursor 형식입니다.' })
+        }
+
+        const limit = parseLimit(req.query.limit);
+        if (limit === null) {
+            return res.status(400).json({ error: '유효하지 않은 limit입니다.' });
+        }
 
         if (!ObjectId.isValid(boardId)) {
             return res.status(400).json({ error: '유효하지 않은 ID입니다.' })
@@ -153,7 +164,7 @@ router.get('/:id/pins', async (req, res) => {
             return res.status(404).json({ error: '보드가 존재하지 않습니다.' })
         }
 
-        const filter = cursor ? { _id: { $lt: new ObjectId(cursor) }, boardId: new ObjectId(boardId) } : { boardId: new ObjectId(boardId) };
+        const filter = cursor ? { _id: { $lt: cursor }, boardId: new ObjectId(boardId) } : { boardId: new ObjectId(boardId) };
 
         const boardPins = await db.collection('boardPins').aggregate([
             { $match: filter },
@@ -177,13 +188,10 @@ router.get('/:id/pins', async (req, res) => {
 
         const nextCursor = boardPins[limit] ? boardPins[limit - 1]._id : null;
         const trimmedBoardPins = boardPins.slice(0, limit);
-        const pins = trimmedBoardPins.map(boardPin => boardPin.pin);
+        const pins = trimmedBoardPins.map(boardPin => boardPin.pin).filter(pin => pin);
 
         return res.status(200).json({ pins, nextCursor });
     } catch (error) {
-        if (error.name === 'BSONError' || error.message.includes('ObjectId')) {
-            return res.status(400).json({ error: '유효하지 않은 cursor 형식입니다.' });
-        }
         console.error(error)
         return res.status(500).json({ error: '서버 내부 오류가 발생했습니다.' })
     }
@@ -262,7 +270,7 @@ router.patch('/:id', verifyToken, async (req, res) => {
             return res.status(400).json({ error: '유효하지 않은 ID입니다.' })
         }
 
-        if (!name) {
+        if (typeof name !== 'string' || name.trim().length === 0) {
             return res.status(400).json({ error: '보드 이름을 지정하세요!' })
         }
 
@@ -274,7 +282,7 @@ router.patch('/:id', verifyToken, async (req, res) => {
             return res.status(400).json({ error: '이름은 50자를 초과할 수 없습니다.' });
         }
 
-        if (description?.trim().length > 500) {
+        if (description.trim().length > 500) {
             return res.status(400).json({ error: '설명은 500자를 초과할 수 없습니다.' });
         }
 

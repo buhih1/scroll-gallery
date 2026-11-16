@@ -22,4 +22,15 @@ function validateField(field, value) {
     }
 }
 
-module.exports = { validateField };
+function isValidLink(value) {
+    if (value === undefined || value === null || value === '') return true;
+    if (typeof value !== 'string') return false;
+    try {
+        const { protocol } = new URL(value);
+        return protocol === 'http:' || protocol === 'https:';
+    } catch {
+        return false;
+    }
+}
+
+module.exports = { validateField, isValidLink };

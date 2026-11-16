@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const { getDB } = require('../database');
 const { ObjectId } = require('mongodb');
-const verifyToken = require('../middleware/auth');
+const { parseLimit, parseCursor } = require('../utils/pagination');
 
 router.get('/:username', async (req, res) => {
     try {
@@ -32,10 +32,16 @@ router.get('/:username/boards', async (req, res) => {
             return res.status(404).json({ error: '사용자를 찾을 수 없습니다.' })
         }
 
-        const cursor = req.query.cursor;
-        const parsedLimit = Number(req.query.limit);
-        const limit = (parsedLimit > 0 && parsedLimit <= 50) ? parsedLimit : 10;
-        const filter = cursor ? { ownerId: user._id, _id: { $lt: new ObjectId(cursor) } } : { ownerId: user._id }
+        const cursor = parseCursor(req.query.cursor);
+        if (cursor === null) {
+            return res.status(400).json({ error: '유효하지 않은 cursor 형식입니다.' })
+        }
+
+        const limit = parseLimit(req.query.limit);
+        if (limit === null) {
+            return res.status(400).json({ error: '유효하지 않은 limit입니다.' });
+        }
+        const filter = cursor ? { ownerId: user._id, _id: { $lt: cursor } } : { ownerId: user._id }
 
         const boards = await db.collection('boards').aggregate([
             { $match: filter },
@@ -126,9 +132,6 @@ router.get('/:username/boards', async (req, res) => {
         res.status(200).json({ boards: trimmedBoards, nextCursor })
 
     } catch (error) {
-        if (error.name === 'BSONError' || error.message.includes('ObjectId')) {
-            return res.status(400).json({ error: '유효하지 않은 cursor 형식입니다.' });
-        }
         console.log(error)
         res.status(500).json({ error: '서버 내부 오류가 발생했습니다.' })
     }
@@ -142,10 +145,16 @@ router.get('/:username/pins', async (req, res) => {
             return res.status(404).json({ error: '사용자를 찾을 수 없습니다.' })
         }
 
-        const cursor = req.query.cursor;
-        const parsedLimit = Number(req.query.limit);
-        const limit = (parsedLimit > 0 && parsedLimit <= 50) ? parsedLimit : 10;
-        const filter = cursor ? { ownerId: user._id, _id: { $lt: new ObjectId(cursor) } } : { ownerId: user._id }
+        const cursor = parseCursor(req.query.cursor);
+        if (cursor === null) {
+            return res.status(400).json({ error: '유효하지 않은 cursor 형식입니다.' })
+        }
+
+        const limit = parseLimit(req.query.limit);
+        if (limit === null) {
+            return res.status(400).json({ error: '유효하지 않은 limit입니다.' });
+        }
+        const filter = cursor ? { ownerId: user._id, _id: { $lt: cursor } } : { ownerId: user._id }
 
         const pins = await db.collection('pins')
             .find(filter)
@@ -158,9 +167,6 @@ router.get('/:username/pins', async (req, res) => {
 
         res.status(200).json({ pins: trimmedPins, nextCursor })
     } catch (error) {
-        if (error.name === 'BSONError' || error.message.includes('ObjectId')) {
-            return res.status(400).json({ error: '유효하지 않은 cursor 형식입니다.' });
-        }
         console.log(error)
         res.status(500).json({ error: '서버 내부 오류가 발생했습니다.' })
     }
@@ -188,8 +194,10 @@ router.get('/:username/pins/all', async (req, res) => {
         }
 
         const cursorParam = req.query.cursor;
-        const parsedLimit = Number(req.query.limit);
-        const limit = (parsedLimit > 0 && parsedLimit <= 50) ? parsedLimit : 10;
+        const limit = parseLimit(req.query.limit);
+        if (limit === null) {
+            return res.status(400).json({ error: '유효하지 않은 limit입니다.' });
+        }
 
         let decoded = null;
         if (cursorParam) {
